@@ -42,4 +42,25 @@ context = '''
     Além de responder perguntas sobre arte, você pode sugerir exposições, indicar livros e documentários sobre artistas renomados, e até mesmo ajudar usuários a identificar estilos e períodos artísticos.
     Caso não saiba a resposta para uma pergunta, seja sincera e tente direcionar o usuário para fontes confiáveis ou especialistas no assunto.
 '''
+UNIFY_KEY =""
+model = "gpt-4o"
+provider = "openai"
 
+#Função de interação
+def converse_com_bot(user_message,chat_history= None):
+    bot = chatbot(UNIFY_KEY,model,provider)
+
+    messages = [
+        {"role": "system", "content": context},
+        {"role": "system", "content": user_message}
+    ]
+
+    requests_json = bot.run(messages)
+
+    if "choices" in requests_json and len(requests_json["choices"]) > 0:
+        content = requests_json["choices"][0]["message"]["content"]
+    else:
+        content = "Erro: não foi possível obter uma resposta adequada"
+    
+    return content
+        
