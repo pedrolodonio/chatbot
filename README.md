@@ -10,14 +10,14 @@ Este projeto implementa um chatbot chamado **Aurora**, um assistente virtual edu
 - **Unify.ai API** - Modelo de IA utilizado para gerar respostas.
 
 ## Como Executar o Projeto
-### 1️.Pré-requisitos
+### 1.Pré-requisitos
 Antes de rodar o projeto, instale as dependências necessárias.
 
 ```sh
 pip install gradio requests
 ```
 
-### 2️.Configuração da Chave de API
+### 2.Configuração da Chave de API
 O projeto utiliza a API do Unify.ai. Você deve obter uma chave de API e adicioná-la ao código, substituindo `SUA_CHAVE_AQUI` na variável `UNIFY_KEY` dentro do arquivo Python.
 
 ```python
