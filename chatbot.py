@@ -1,39 +1,38 @@
-# Importando Bibliotecas
 import gradio as gr
 import requests
 import json
 
-#Define classe chatbot
-class chatbot:
-
-#Função construtora
-    def __init__(self,api_key,model,provider = "openai"):
+# Define classe chatbot
+class Chatbot:
+    # Função construtora
+    def __init__(self, api_key, model, provider="openai"):
         self.api_key = api_key
         self.model = model
         self.provider = provider
-        self.url = "http//:api.unify.ai/vO/chat/completions"
-        self.header = {"Authorization": f"Bearer{self.api_key}"}
-        self.headers = {"Content-Type": "application/json"}
+        self.url = "https://api.unify.ai/v0/chat/completions" 
+        self.headers = {
+            "Authorization": f"Bearer {self.api_key}", 
+            "Content-Type": "application/json"
+        }
 
-#Função para o funcionamento da aplicação:
-    def run(self,messages):
+    # Função para o funcionamento da aplicação:
+    def run(self, messages):
         payload = {
-            "model":f"{self.model}@{self.provider}",
+            "model": f"{self.model}@{self.provider}",
             "messages": messages,
             "temperature": 0.5,
             "max_tokens": 1000,
             "stream": False
         }
 
-        response = requests.post(self.url, headers = self.headers, data=json.dumps(payload))
+        response = requests.post(self.url, headers=self.headers, data=json.dumps(payload))
 
-        if response.status.code == 200:
+        if response.status_code == 200: 
             return response.json()
         else:
             return {"error": response.text}
-        
-#O que a IA vai fazer ?
 
+# Contexto da IA
 context = '''
     Você é um assistente virtual da ArteViva chamado Aurora. Você é super educada e atenciosa.
     A ArteViva é uma empresa fictícia focada em obras de arte, proporcionando informações sobre artistas, estilos e tendências artísticas. 
@@ -42,25 +41,34 @@ context = '''
     Além de responder perguntas sobre arte, você pode sugerir exposições, indicar livros e documentários sobre artistas renomados, e até mesmo ajudar usuários a identificar estilos e períodos artísticos.
     Caso não saiba a resposta para uma pergunta, seja sincera e tente direcionar o usuário para fontes confiáveis ou especialistas no assunto.
 '''
-UNIFY_KEY =""
+UNIFY_KEY = "SUA_CHAVE_AQUI"
 model = "gpt-4o"
 provider = "openai"
 
-#Função de interação
-def converse_com_bot(user_message,chat_history= None):
-    bot = chatbot(UNIFY_KEY,model,provider)
+# Função de interação
+def converse_com_bot(user_message, chat_history=None):
+    bot = Chatbot(UNIFY_KEY, model, provider)
 
     messages = [
         {"role": "system", "content": context},
-        {"role": "system", "content": user_message}
+        {"role": "user", "content": user_message}  
     ]
 
-    requests_json = bot.run(messages)
+    response_json = bot.run(messages)
 
-    if "choices" in requests_json and len(requests_json["choices"]) > 0:
-        content = requests_json["choices"][0]["message"]["content"]
+    if "choices" in response_json and len(response_json["choices"]) > 0:
+        content = response_json["choices"][0]["message"]["content"]
     else:
-        content = "Erro: não foi possível obter uma resposta adequada"
+        content = "Erro: não foi possível obter uma resposta adequada."
     
     return content
-        
+
+# Criação da interface gráfica
+demo = gr.ChatInterface(
+    fn=converse_com_bot,
+    examples=["Olá Aurora!", "A ArteViva é uma empresa real?", "Qual o seu objetivo?"],
+    title="Converse com a Aurora!",
+    description="Converse com a IA, Aurora, da ArteViva"
+)
+
+demo.launch(share=True, debug=True)
