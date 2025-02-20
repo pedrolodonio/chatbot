@@ -1,7 +1,6 @@
 # Chatbot Aurora - Assistente Virtual de Arte
 
-Este projeto implementa um chatbot chamado **Aurora**, um assistente virtual educado e atencioso especializado em obras de arte. O chatbot utiliza a API do Unify.ai para gerar respostas e está integrado ao Gradio para fornecer uma interface gráfica interativa.
-
+Este projeto implementa um chatbot chamado **Aurora**, um assistente virtual educado e atencioso especializado em obras de arte. O chatbot utiliza a API do Unify.ai para gerar respostas e está integrado ao Gradio para fornecer uma interface gráfica interativa. O projeto foi desenvolvido durante o curso Python da CodeMaster Academy,na plataforma Udemy.
 
 ## Tecnologias Utilizadas
 - **Python** - Linguagem principal do projeto.
